@@ -1,0 +1,9 @@
+schema_version: "1.0"
+accuracy: {max_drop_percentage_points: 1.0}
+model_size: {max_increase_percent: 5.0}
+prediction_agreement:
+  fp32_probability_max_abs_difference: 0.001
+  int8_top1_min_fraction_agreeing_with_fp32: 0.98
+latency:
+  ci_same_job_baseline_max_increase_percent: 25.0
+  local_hardware_max_increase_percent: 10.0

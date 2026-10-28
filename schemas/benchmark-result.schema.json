@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "benchmark-result.schema.json",
+  "title": "Keyword Spotting Benchmark Result",
+  "type": "object",
+  "required": ["schema_version", "config_path", "artifact", "runtime", "device", "benchmark", "accuracy", "timestamp"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "config_path": {"type": "string"},
+    "artifact": {"type": "object", "required": ["path", "sha256"], "properties": {"path": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}}},
+    "runtime": {"type": "object", "required": ["name", "version"], "properties": {"name": {"enum": ["pytorch", "onnxruntime", "tflite"]}, "version": {"type": "string"}, "threads": {"type": "integer", "minimum": 1}}},
+    "device": {"type": "object", "required": ["architecture", "os"], "properties": {"architecture": {"type": "string"}, "os": {"type": "string"}, "soc": {"type": "string"}}},
+    "benchmark": {"type": "object", "required": ["mode", "warmup_iterations", "measured_iterations", "batch_size", "latency_ms"], "properties": {"mode": {"enum": ["smoke", "final"]}, "warmup_iterations": {"type": "integer", "minimum": 0}, "measured_iterations": {"type": "integer", "minimum": 1}, "batch_size": {"const": 1}, "latency_ms": {"type": "object", "required": ["p50", "p95"], "properties": {"p50": {"type": "number"}, "p95": {"type": "number"}}}}},
+    "accuracy": {"type": "object", "required": ["test_split", "top1"], "properties": {"test_split": {"const": "official_test"}, "top1": {"type": "number", "minimum": 0, "maximum": 1}}},
+    "timestamp": {"type": "string", "format": "date-time"}
+  }
+}

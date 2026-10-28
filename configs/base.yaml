@@ -1,0 +1,38 @@
+schema_version: "1.0"
+seed: 1337
+dataset:
+  name: google_speech_commands
+  version: v0.02
+  split_policy: official
+  classes: ["yes", "no", "up", "down", "left", "right", "on", "off", "stop", "go", "unknown", "silence"]
+  unknown_downsample_ratio: 0.10
+  silence_source: background_noise
+audio: {sample_rate_hz: 16000, clip_duration_seconds: 1.0}
+features:
+  type: mfcc
+  computed_outside_model: true
+  n_mfcc: 40
+  n_fft: 512
+  window_ms: 30
+  hop_ms: 10
+  normalization: {method: train_split_mean_std, mean: null, std: null}
+model:
+  architecture: depthwise_separable_cnn
+  target_parameter_count: tens_of_thousands
+  export_safe_ops: [conv2d, depthwise_conv2d, batch_norm, relu, average_pool]
+runtimes:
+  reference: pytorch
+  required: [pytorch, onnxruntime, tflite]
+  tflite_conversion: evaluate_ai_edge_torch_or_onnx2tf_early
+quantization:
+  method: static_post_training_int8
+  calibration_split: train
+  calibration_samples: 300
+  qat_if_accuracy_drop_percentage_points_gt: 1.0
+benchmark:
+  headline_latency: model_only
+  report_preprocessing_separately: true
+  development_device: x86_linux
+  arm_device_policy: physical_device_only
+  arm_preference: raspberry_pi
+  android_fallback: tflite_benchmark_over_adb

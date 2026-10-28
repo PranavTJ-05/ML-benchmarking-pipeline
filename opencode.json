@@ -1,0 +1,27 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "build",
+  "instructions": ["AGENTS.md", "roadmap.md"],
+  "compaction": {
+    "auto": true,
+    "tail_turns": 15
+  },
+  "agent": {
+    "benchmark-reviewer": {
+      "description": "Reviews ML benchmark changes for reproducibility, metric integrity, and missing validation.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "deny",
+        "bash": "ask"
+      }
+    },
+    "benchmark-verifier": {
+      "description": "Runs the narrowest relevant checks and verifies benchmark artifacts without inventing results.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "deny",
+        "bash": "ask"
+      }
+    }
+  }
+}

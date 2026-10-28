@@ -1,0 +1,14 @@
+base_config: configs/base.yaml
+dataset_dir: data/speech_commands_v0.02
+manifest: artifacts/data/manifest.json
+output_dir: artifacts/training
+epochs: 30
+batch_size: 64
+learning_rate: 0.001
+patience: 5
+threads: 1
+# Candidates are selected using validation accuracy only.
+candidates:
+  - {channels: 64, blocks: 3}
+  - {channels: 64, blocks: 4}
+accuracy_target: 0.90
